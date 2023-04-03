@@ -9,7 +9,7 @@ class InstitutionUseCase:
 
     def get_institution(self):
         """
-            Lista de instutition
+            Proceso instutition
         :return:
         """
 
@@ -28,8 +28,21 @@ class InstitutionUseCase:
 
         response = ResponseInstitution(
             code=0,
-            message="proceso exitoso",
+            message="Proceso Aceptado",
             data=data_response
         )
+
+        return response
+
+    def delete_institution(self, institution_id):
+        """
+        Proceso de Eliminacion de una institucion
+        :return:
+        """
+        rows_affected = self.institution_repository.delete_institution(institution_id)
+        if rows_affected > 0:
+            response = ResponseInstitution(code=200, message="Proceso Aceptado")
+        else:
+            response = ResponseInstitution(code=-1, message="No se pudo Eliminar")
 
         return response

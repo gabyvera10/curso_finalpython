@@ -1,5 +1,6 @@
 import connexion
 import six
+import logging
 
 from swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
 from swagger_server.models.request_institution_add import RequestInstitutionAdd  # noqa: E501
@@ -44,7 +45,17 @@ class IntitutionView(MethodView):
 
         :rtype: InlineResponse200
         """
-        return 'do some magic!'
+        try:
+            response = self.institution_usecase.delete_institution(institution_id)
+            logging.error(f'Aceptado {institution_id}')
+        except Exception as ex:
+            message = str(ex)
+            logging.error(f'Error al Eliminar {institution_id}: {message}')
+            response = Response400(
+                code=-1,
+                message=message)
+            return response
+        return response
 
     def get_institution(self):  # noqa: E501
         """Lista instituciones
